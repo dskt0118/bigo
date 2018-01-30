@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<script type="text/javascript" src="answer_list.js"></script>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>BINGOゲーム</title>
+</head>
+
+<body>
+	<div id="head_block"></div>
+	<div id="img_block">
+		<img id="answer_img" src="img/common/start.png">
+	</div>
+	<div id="list_block">
+		<p id="answer_lists"></p>
+	</div>
+
+
+</body>
+<script src="js/jquery-1.11.3.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+	function shuffle(array) {
+		var m = array.length,
+			t, i;
+		while (m) {
+			i = Math.floor(Math.random() * m--);
+			t = array[m];
+			array[m] = array[i];
+			array[i] = t;
+		}
+	}
+
+	function next_count(c, max_c) {
+		if (c >= max_c) {
+			c = max_c;
+		} else {
+			c = c + 1;
+		}
+		return c;
+	}
+
+	function prev_count(c, min_c) {
+		if (c <= min_c) {
+			c = min_c;
+		} else {
+			c = c - 1;
+		}
+		return c;
+	}
+
+	// 問題番号を配列にする question_keys_alfa
+	// 正解の文字列を作る a_lists_html
+	var question_keys_alfa = [];
+	var random_keys_alfa = [];
+	var answer_lists_html = '';
+	for (key in qa_lists) {
+		_key = key.toLowerCase();
+		question_keys_alfa.push(_key);
+		random_keys_alfa.push(_key);
+		// answer_lists_html += '<span class="answer_list" id="' + _key + '">【' + qa_lists[key] + '】</span>';
+	}
+	$("#answer_lists").append(answer_lists_html);
+
+	// 問題番号配列をシャッフル
+	shuffle(question_keys_alfa);
+	console.log(question_keys_alfa);
+
+	// 初期画面設定
+	var w = $(window).width();
+	var h = $(window).height();
+	var head_h = h * 0.0;
+	var img_h = h * 0.95;
+	var list_h = h * 0.25;
+
+
+	// $("#ppt").width(w);
+
+	$("#head_block").height(head_h);
+	$("#img_block").height(img_h);
+	$("#list_block").height(list_h);
+	$("#list_block").width(w*0.95);
+	$("#answer_img").height(img_h);
+	$("#ans_list").height(list_h);
+	$("#img_block").css("text-align", "center");
+	$("#img_block").css("position", "relative");
+	$("#list_block").css("font-size", "160%");
+	$("#list_block").css("background", "rgba(255, 237, 254, 0.69)");
+	$("#list_block").css("padding", "0.1em");
+	$("#list_block").css("box-shadow", "0 0 10px rgba(0, 0, 0, 0.23)");
+	$("#list_block").css("font-weight", "bold");
+	$("#list_block").css("color", "rgb(0, 47, 212)");
+	$("#list_block").css("border", "dashed 2px rgb(255, 131, 246)");
+	$("#list_block").css("position", "absolute");
+	$("#list_block").css("top", "70%");
+	$("#list_block").css("left", "3%");
+	$("#list_block").css("right", "3%");
+	
+	$("#img_block").css("text-align", "center");
+	$(".answer_list").css("color", "gray");
+
+	// 初期値設定
+	var max_count = question_keys_alfa.length;
+	var min_count = -1;
+	var count = -1;
+	var clicked_back = false;
+	var qa_type = "answer";
+	var img_src = '';
+	var answer_list = '';
+
+	// キーが押されたときの挙動
+	// $('html').keyup(function(e) {
+	// 	console.log(e.which);
+	// })
+	$('html').keyup(function(e) {
+		// if (e.which == 40 || e.which == 34 || e.which == 38 || e.which == 33) {
+		if (e.which == 40 || e.which == 34) {
+			// 40下　34pagedown 38上 33pageup
+			// 戻る
+			if (e.which == 38 || e.which == 33) {
+				count = prev_count(count, min_count);
+				clicked_back = true;
+			} else {
+				// 進む
+				count = next_count(count, max_count);
+				clicked_back = false;
+			}
+
+			var prefix = "img/" + qa_type + "/";
+			var suffix = ".png";
+
+			if (count >= max_count) {
+				img_src = "img/common/end.png";
+				answer_list = '';
+			} else if (count <= min_count) {
+				img_src = "img/common/start.png";
+				answer_list = '';
+			} else {
+				var question_num_alfa = question_keys_alfa[count];
+				img_src = prefix + question_num_alfa + suffix;
+				answer_list = '<span class="answer_list" id="' + qa_type + '">【' + question_num_alfa + '】</span>';
+
+				// if (qa_type == "answer") {
+				// 	if (!clicked_back) {
+				// 		$("#" + question_num_alfa).text("【" + qa_lists[question_num_alfa.toUpperCase()] + "】");
+				// 		$("#" + question_num_alfa).css("color", "red");
+				// 		$("#" + question_num_alfa).css("font-weight", "bold");
+				// 	}
+				// }
+			}
+			// console.log(img_src);
+			$("#answer_img").attr('src', img_src);
+			$("#answer_img").height(img_h);
+			$("#answer_lists").append(answer_list);
+			$("#ans_list").height(list_h);
+
+			console.log("今は　" + count + "問目" + "：" + qa_type);
+		} else if (e.which == 13) {
+
+		}
+	});
+</script>
+
+</html>
