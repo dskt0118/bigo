@@ -17,6 +17,12 @@
 	<div id="list_block">
 		<p id="answer_lists"></p>
 	</div>
+	<audio id="drums">
+		<source src="drum_roll.mp3" type="audio/mp3">
+	</audio>
+	<audio id="jan">
+		<source src="jan.mp3" type="audio/mp3">
+	</audio>
 
 
 </body>
@@ -130,6 +136,8 @@
 	var img_src = '';
 	var answer_list = '';
 	timer = "";
+	drum = '';
+	jan = '';
 
 	// キーが押されたときの挙動
 	// $('html').keyup(function(e) {
@@ -140,6 +148,12 @@
 		// if (e.which == 40 || e.which == 34 || e.which == 38 || e.which == 33) {
 		if (e.which == 40) {
 			clearInterval(timer);
+			$("#jan").get(0).pause();
+			$("#jan").get(0).currentTime = 0;
+			$("#drums").get(0).pause();
+			$("#drums").get(0).currentTime = 0;
+		  jan = $("#jan").get(0).play();
+			
 			// 40下　34pagedown 38上 33pageup
 			// 戻る
 			if (e.which == 38 || e.which == 33) {
@@ -182,6 +196,11 @@
 			// console.log("今は　" + count + "問目" + "：" + qa_type);
 		} else if (e.which == 38) {
 			clearInterval(timer);
+			$("#jan").get(0).pause();
+			$("#jan").get(0).currentTime = 0;
+			$("#drums").get(0).pause();
+			$("#drums").get(0).currentTime = 0;
+			drum = $("#drums").get(0).play();
 			shuffle(_question_keys_alfa);
 			
 			// ランダム用
