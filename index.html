@@ -11,6 +11,7 @@
 <body>
 	<div id="head_block"></div>
 	<div id="img_block">
+		<p id='present'>景品あと <span id='present_num'>25</span> 個</p>
 		<img id="answer_img" src="img/common/start.png">
 	</div>
 	<div id="list_block">
@@ -101,6 +102,21 @@
 	$("#list_block").css("top", "70%");
 	$("#list_block").css("left", "3%");
 	$("#list_block").css("right", "3%");
+	$("#present").css("position", "absolute");
+	$("#present").css("top", "3%");
+	$("#present").css("left", "3%");
+	// $("#present").css("right", "3%");
+	$("#present").css("background", "rgba(255, 237, 254, 0.69)");
+	$("#present").css("padding", "0.1em");
+	$("#present").css("font-weight", "bold");
+	$("#present").css("font-size", "160%");
+	$("#present_num").css("font-size", "300%");
+	$("#present").css("color", "rgb(0, 47, 212)");
+	$("#present_num").css("color", "rgb(255, 79, 79)");
+	
+	
+	
+	
 	
 	$("#img_block").css("text-align", "center");
 	$(".answer_list").css("color", "gray");
@@ -117,13 +133,13 @@
 
 	// キーが押されたときの挙動
 	// $('html').keyup(function(e) {
-	// 	console.log(e.which);
 	// })
 	$('html').keyup(function(e) {
-		clearInterval(timer);
+			console.log(e.which);
 		
 		// if (e.which == 40 || e.which == 34 || e.which == 38 || e.which == 33) {
 		if (e.which == 40) {
+			clearInterval(timer);
 			// 40下　34pagedown 38上 33pageup
 			// 戻る
 			if (e.which == 38 || e.which == 33) {
@@ -165,6 +181,7 @@
 
 			// console.log("今は　" + count + "問目" + "：" + qa_type);
 		} else if (e.which == 38) {
+			clearInterval(timer);
 			shuffle(_question_keys_alfa);
 			
 			// ランダム用
@@ -182,6 +199,11 @@
 					_count = _count +1;
 				}
 			,80);
+		} else if (e.which == 39){ //増やす
+			$("#present_num").text( ~~$("#present_num").text() + 1) ;
+		} else if (e.which == 37){ //減らす
+			$("#present_num").text( ~~$("#present_num").text() - 1) ;
+			
 		}
 	});
 </script>
