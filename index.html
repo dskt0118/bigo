@@ -53,12 +53,15 @@
 	// 問題番号を配列にする question_keys_alfa
 	// 正解の文字列を作る a_lists_html
 	var question_keys_alfa = [];
+	var _question_keys_alfa = [];
 	var random_keys_alfa = [];
+	var _random_keys_alfa = [];
 	var answer_lists_html = '';
 	for (key in qa_lists) {
 		_key = key.toLowerCase();
 		question_keys_alfa.push(_key);
 		random_keys_alfa.push(_key);
+		_question_keys_alfa.push(_key);
 		// answer_lists_html += '<span class="answer_list" id="' + _key + '">【' + qa_lists[key] + '】</span>';
 	}
 	$("#answer_lists").append(answer_lists_html);
@@ -66,6 +69,8 @@
 	// 問題番号配列をシャッフル
 	shuffle(question_keys_alfa);
 	console.log(question_keys_alfa);
+	console.log(_question_keys_alfa);
+
 
 	// 初期画面設定
 	var w = $(window).width();
@@ -108,14 +113,17 @@
 	var qa_type = "answer";
 	var img_src = '';
 	var answer_list = '';
+	timer = "";
 
 	// キーが押されたときの挙動
 	// $('html').keyup(function(e) {
 	// 	console.log(e.which);
 	// })
 	$('html').keyup(function(e) {
+		clearInterval(timer);
+		
 		// if (e.which == 40 || e.which == 34 || e.which == 38 || e.which == 33) {
-		if (e.which == 40 || e.which == 34) {
+		if (e.which == 40) {
 			// 40下　34pagedown 38上 33pageup
 			// 戻る
 			if (e.which == 38 || e.which == 33) {
@@ -155,9 +163,25 @@
 			$("#answer_lists").append(answer_list);
 			$("#ans_list").height(list_h);
 
-			console.log("今は　" + count + "問目" + "：" + qa_type);
-		} else if (e.which == 13) {
-
+			// console.log("今は　" + count + "問目" + "：" + qa_type);
+		} else if (e.which == 38) {
+			shuffle(_question_keys_alfa);
+			
+			// ランダム用
+			var _prefix = "img/" + qa_type + "/";
+			var _suffix = ".png";
+			var _count = 0;
+			timer = setInterval(function (){
+				var c = _count % 75;
+					var _question_num_alfa = _question_keys_alfa[c];
+					var _img_src = _prefix + _question_num_alfa + _suffix;
+					
+					$("#answer_img").attr('src', _img_src);
+					$("#answer_img").height(img_h);
+					$("#ans_list").height(list_h);
+					_count = _count +1;
+				}
+			,80);
 		}
 	});
 </script>
